@@ -1,152 +1,3 @@
-// const image = document.querySelector('img');
-// const title = document.getElementById('title');
-// const artist = document.getElementById('artist');
-// const music = document.querySelector('audio');
-// const progressContainer = document.getElementById('progress-container');
-// const progress = document.getElementById('progress');
-// const currentTimeEl = document.getElementById('current-time');
-// const durationEl = document.getElementById('duration');
-// const prevBtn = document.getElementById('prev');
-// const playBtn = document.getElementById('play');
-// const nextBtn = document.getElementById('next');
-
-// //Music
-// const songs = [{
-//         name: 'jacinto-1',
-//         displayName: 'Electric Chill Machine',
-//         artist: 'Jacinto Design'
-//     },
-//     {
-//         name: 'jacinto-2',
-//         displayName: 'Seven Nation Army (Remix)',
-//         artist: 'Jacinto Design'
-//     },
-//     {
-//         name: 'jacinto-3',
-//         displayName: 'Good Night',
-//         artist: 'Jacinto Design'
-//     },
-//     {
-//         name: 'metric-1',
-//         displayName: 'Metrix Remix',
-//         artist: 'Jacinto Design'
-//     }
-// ];
-
-// //Check if playing
-// let isPlaying = false;
-
-// //Play
-// function playSong() {
-//     isPlaying = true;
-//     playBtn.classList.replace('fa-play', 'fa-pause')
-//     playBtn.setAttribute('title', 'Pause');
-//     music.play();
-// }
-
-// //Pause
-// function pauseSong() {
-//     isPlaying = false;
-//     playBtn.classList.replace('fa-pause', 'fa-play')
-//     playBtn.setAttribute('title', 'Play');
-//     music.pause();
-// }
-
-// //Play or Pause Event Listener
-// playBtn.addEventListener('click', () => (isPlaying ? pauseSong() : playSong()))
-
-// //Update DOM
-// function loadSong(song) {
-//     title.textContent = song.displayName;
-//     artist.textContent = song.artist;
-//     music.src = `music/${song.name}.mp3`;
-//     image.src = `img/${song.name}.jpg`;
-// }
-// //Current song 
-// let songIndex = 0;
-
-
-// //Play previous song
-// function prevSong() {
-//     songIndex--;
-//     if (songIndex < 0) {
-//         songIndex = songs.length - 1;
-//     }
-
-
-//     loadSong(songs[songIndex]);
-//     playSong();
-
-// }
-
-// //Next Song
-// function nextSong() {
-//     songIndex++;
-//     if (songIndex > songs.length - 1) {
-//         songIndex = 0;
-
-//     }
-
-//     loadSong(songs[songIndex]);
-//     playSong();
-// }
-
-// //Update Progress Bar and Time
-// function updateProgressBar(event) {
-
-//     if (isPlaying) {
-//         const {
-//             duration,
-//             currentTime
-//         } = event.srcElement;
-
-//         //Update progress bar width
-//         const progressPercent = (currentTime / duration) * 100;
-//         progress.style.width = `${progressPercent}%`;
-//         //Calculate display for  duration
-//         const durationMinutes = Math.floor(duration / 60);
-//         let durationSeconds = Math.floor(duration % 60);
-//         if (durationSeconds < 10) {
-//             durationSeconds = `0${durationSeconds}`;
-//         } //Delay switching duration Element to avoid Nan displayed for duration on load
-//         if (durationSeconds) {
-//             durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
-
-//         }
-
-
-//         // Calculate Display for the current time
-//         const currentMinutes = Math.floor(currentTime / 60);
-//         let currentSeconds = Math.floor(currentTime % 60);
-//         if (currentSeconds < 10) {
-//             currentSeconds = `0${currentSeconds}`;
-//         }
-
-//         currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
-//     }
-// }
-
-
-// // Function to set the time of the song by clicking the progress bar
-// function setProgressBar(event) {
-//     const width = this.clientWidth;
-//     const clickX = event.offsetX;
-//     const {
-//         duration
-//     } = music;
-//     music.currentTime = (clickX / width) * duration;
-// }
-
-// // On Load -Select 1st song
-// loadSong(songs[songIndex]);
-
-// // Event Listeners for prev and next
-// prevBtn.addEventListener('click', prevSong);
-// nextBtn.addEventListener('click', nextSong);
-// music.addEventListener('ended', nextSong);
-// music.addEventListener('timeupdate', updateProgressBar);
-// progressContainer.addEventListener('click', setProgressBar);
-
 // Elements
 const image = getElem('img');
 const title = getElem('#title');
@@ -164,10 +15,7 @@ const nextBtn = getElem('#next');
 let currentSong = 0;
 const apiUrl = 'https://api.napster.com/v2.1/tracks/top?apikey=ZTk2YjY4MjMtMDAzYy00MTg4LWE2MjYtZDIzNjJmMmM0YTdm';
 let songsArray = [];
-// getTopTracks
-//     .then((response) => {
-//         console.log(response);
-//     });
+
 
 
 
@@ -225,6 +73,7 @@ async function fetchSongs(url) {
 // Function to Play Song
 function playSong() {
     isPlaying = true;
+    console.log('play song');
     playBtn.classList.replace('fa-play', 'fa-pause');
     playBtn.setAttribute('title', 'Pause');
     music.play();
@@ -251,15 +100,18 @@ function loadSong(song) {
 }
 
 // Update DOM
-async function loadSongFromApiData(song) {
-    await console.log(song);
+function loadSongFromApiData(song) {
+    if (song) {
+        console.log(song);
 
-    title.textContent = song.name;
-    artist.textContent = song.artistName;
-    music.src = song.previewURL;
-    image.src = `http://direct.rhapsody.com/imageserver/v2/albums/${song.albumId}/images/300x300.jpg`;
+        title.textContent = song.name;
+        artist.textContent = song.artistName;
+        music.src = song.previewURL;
+        image.src = `http://direct.rhapsody.com/imageserver/v2/albums/${song.albumId}/images/300x300.jpg`;
 
 
+
+    }
 
 
 }
@@ -311,7 +163,10 @@ function setProgressBar(e) {
 
 // Function for next song
 function nextSong() {
-    currentSong < songs.length - 1 ? currentSong++ : (currentSong = 0);
+    console.log(songsArray);
+    currentSong < songsArray.length - 1 ? currentSong++ : (currentSong = 0);
+
+    //currentSong < songs.length - 1 ? currentSong++ : (currentSong = 0);
     //loadSong(songs[currentSong]);
     loadSongFromApiData(songsArray[currentSong]);
     playSong();
@@ -319,7 +174,9 @@ function nextSong() {
 
 // function for previous song
 function previousSong() {
-    currentSong <= 0 ? (currentSong = songs.length - 1) : currentSong--;
+    currentSong <= 0 ? (currentSong = songsArray.length - 1) : currentSong--;
+
+    //currentSong <= 0 ? (currentSong = songs.length - 1) : currentSong--;
     //loadSong(songs[currentSong]);
     loadSongFromApiData(songsArray[currentSong]);
     playSong();
@@ -330,6 +187,9 @@ function previousSong() {
 songsArray = fetchSongs(apiUrl).then(songsArray => {
 
     loadSongFromApiData(songsArray[0]);
+
+
+
 });
 
 
